@@ -138,18 +138,30 @@
     echo "<head>" . $topheader . "<style>" . $style . "</style></head>";
     echo "<div class='info'>Rig done in " . $diff . " " . $seconds . "</div>";
 
-    for ($i = 0; $i < count($paths); $i++) {
-      echo "<div class='item'><div class='title'>Size: " . round(filesize($paths[$i]) / 1024 / 1024, 2) . " MiB</div>";
-      $data = file_get_contents($paths[$i]);
-      echo "<img class='image' src='data:" . mime_content_type($paths[$i]) . ";base64," . base64_encode($data) . "'></div>";
+    try {
+      for ($i = 0; $i < count($paths); $i++) {
+        echo "<div class='item'><div class='title'>Size: " . round(filesize($paths[$i]) / 1024 / 1024, 2) . " MiB</div>";
+        $data = file_get_contents($paths[$i]);
+        echo "<img class='image' src='data:" . mime_content_type($paths[$i]) . ";base64," . base64_encode($data) . "'></div>";
+      }
+    } catch (Exception $e) {
+      cleanup();
+      exit(0);
     }
 
+    cleanup();
+  } else {
+    echo "There was an error uploading the image.";
+  }
+  
+  function cleanup() {
+    global $target;
+    global $paths;
+    
     unlink($target);
 
     for ($i = 0; $i < count($paths); $i++) {
       unlink($paths[$i]);
     }
-  } else {
-    echo "There was an error uploading the image.";
-  }    
+  }
 ?>

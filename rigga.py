@@ -93,7 +93,7 @@ def get_shadowcolor(color):
     shadowcolor = "#e3e3e3"
   return shadowcolor
 
-def make_image(img, top_text, middle_text, bottom_text, color_1, color_2, color_3):  
+def make_image(img, top_text, middle_text, bottom_text, color_1, color_2, color_3, ext):  
   top_text, middle_text, bottom_text = check_text(top_text, middle_text, bottom_text)
 
   # TOP
@@ -151,7 +151,7 @@ def make_image(img, top_text, middle_text, bottom_text, color_1, color_2, color_
     draw.text((x, y), bottom_text, font=font, fill=color_3, align="center")
 
   # SAVE
-  result_path = "results/{0}_{1}.jpg".format(randword(), now())
+  result_path = "results/{0}_{1}{2}".format(randword(), now(), ext)
   img.save(result_path)
   return result_path
 
@@ -172,7 +172,7 @@ def main():
   result_paths = []
 
   for image in range(0, num_images):
-    res = make_image(img.copy(), top_text, middle_text, bottom_text, color_1, color_2, color_3)
+    res = make_image(img.copy(), top_text, middle_text, bottom_text, color_1, color_2, color_3, ext)
     result_paths.append(res)
 
   print(" ".join(result_paths))

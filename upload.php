@@ -141,7 +141,7 @@
     for ($i = 0; $i < count($paths); $i++) {
       echo "<div class='item'><div class='title'>Size: " . round(filesize($paths[$i]) / 1024 / 1024, 2) . " MiB</div>";
       $data = file_get_contents($paths[$i]);
-      echo "<img class='image' src='data:image/jpeg;base64," . base64_encode($data) . "'></div>";
+      echo "<img class='image' src='data:" . mime_content_type($paths[$i]) . ";base64," . base64_encode($data) . "'></div>";
     }
 
     unlink($target);

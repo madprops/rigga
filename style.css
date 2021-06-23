@@ -1,0 +1,77 @@
+body, html {
+  font-size: 18px;
+  font-family: sans-serif;
+  background-color: rgb(101, 59, 199);
+  text-align: center;
+  color: #FF2D40;
+}
+
+#image {
+  padding-top: 20px;
+  max-height: 600px;
+  max-width: 600px;
+  cursor: pointer;
+}
+
+#form {
+  display: block;
+  padding-top: 20px;
+}
+
+#info {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.button {
+  cursor: pointer;
+  transition: text-shadow 250ms;
+}
+
+.button:hover {
+  text-shadow: 0 0 12px white;
+}
+
+.text {
+  width: 30rem;
+  text-align: center;
+  border-width: 1px;
+  font-size: 20px;
+  background-color: white;
+  padding: 2px;
+}
+
+#submit {
+  font-size: 24px;
+  color: inherit;
+  background-color: inherit;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.color {
+  width: 140px;
+  height: 35px;
+}
+
+#file {
+  font-size: 24px;
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.separator {
+  width: 50%;
+  border-color: #8e8eca;
+}

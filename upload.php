@@ -88,9 +88,16 @@
 
   if (move_uploaded_file($_FILES["file"]["tmp_name"], $target)) {
     $date1 = microtime(true);
-    $cmd = 'python3 rigga.py "' . $target . '" "' . $top_text
-      . '" "' . $middle_text . '" "' . $bottom_text 
-      . '" "' . $color_1 . '" "' . $color_2 . '" "' . $color_3 . '" '. $num_images;
+
+    try {
+      $cmd = 'python3 rigga.py "' . $target . '" "' . $top_text
+        . '" "' . $middle_text . '" "' . $bottom_text 
+        . '" "' . $color_1 . '" "' . $color_2 . '" "' . $color_3 . '" '. $num_images;
+    } catch (Exception $e) {
+      unlink($target);
+      exit(0);
+    }
+
     $paths = explode(" ", exec($cmd));
     $date2 = microtime(true);
 
@@ -157,7 +164,7 @@
   function cleanup() {
     global $target;
     global $paths;
-    
+
     unlink($target);
 
     for ($i = 0; $i < count($paths); $i++) {

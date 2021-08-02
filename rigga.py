@@ -1,24 +1,25 @@
-# pip install pillow
-# pip install colormap
-# pip install easydev
+# pip3 install pillow
 
 from PIL import Image
 from PIL import ImageFont
-from PIL import ImageDraw 
-from colormap import rgb2hex, rgb2hls, hls2rgb
+from PIL import ImageDraw
+from typing import List
+from typing import Tuple
+from typing import Match
 from nouns_list import nouns
 from verbs_list import verbs
+import colorsys
 import datetime
 import random
 import sys
 import os
 import re
 
-font_names = []
+font_names: List[str] = []
 
-def randword():
-    a = ["a","e","i","o","u"] 
-    b = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", 
+def randword() -> str:
+    a = ["a","e","i","o","u"]
+    b = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
     "n", "p", "r", "s", "t", "v", "w", "x", "y", "z"]
 
     word = ""
@@ -28,24 +29,24 @@ def randword():
         word += random.choice(b)
       else :
         word += random.choice(a)
-    
+
     return word
 
-def now():
+def now() -> float:
   return datetime.datetime.timestamp(datetime.datetime.now())
 
-def string_escape(s, encoding='utf-8'):
+def string_escape(s: str, encoding: str = "utf-8") -> str:
   return (s.encode('latin1')         # To bytes, required by 'unicode-escape'
           .decode('unicode-escape') # Perform the actual octal-escaping decode
           .encode('latin1')         # 1:1 mapping back to bytes
-          .decode(encoding)) 
+          .decode(encoding))
 
-def hex_to_rgb(hex):
+def hex_to_rgb(hex: str) -> Tuple[int, ...]:
     hex = hex.lstrip('#')
     hlen = len(hex)
-    return tuple(int(hex[i:i+hlen//3], 16) for i in range(0, hlen, hlen//3)) 
+    return tuple(int(hex[i:i+hlen//3], 16) for i in range(0, hlen, hlen//3))
 
-def get_font(text, img, font_name):
+def get_font(text: str, img: Image.Image, font_name: str) -> ImageFont.FreeTypeFont:
   font_size = int(img.width / 8)
   draw = ImageDraw.Draw(img)
 
@@ -59,24 +60,26 @@ def get_font(text, img, font_name):
       if font_size < 10:
         quit()
 
-def replace_random_word(match):
-  if random.choice([1, 2]) == 1:
-    word = random.choice(nouns)
+def replace_random_word(_: Match[str]) -> str:
+  if random.randint(0, 9) == 9:
+    return str(random.randint(0, 1000))
   else:
-    word = random.choice(verbs)
-  word = word.title()
-  return word
+    if random.randint(0, 1) == 1:
+      word = random.choice(nouns)
+    else:
+      word = random.choice(verbs)
+    word = word.title()
+    return word
 
-def check_text(top_text, middle_text, bottom_text):
-  if "<random>" in top_text.lower() or "<random>" in middle_text.lower() or "<random>" in bottom_text.lower():
-    top_text = re.sub(r'\<random\>', replace_random_word, top_text, flags=re.IGNORECASE)
-    middle_text = re.sub(r'\<random\>', replace_random_word, middle_text, flags=re.IGNORECASE)
-    bottom_text = re.sub(r'\<random\>', replace_random_word, bottom_text, flags=re.IGNORECASE)
+def check_text(top_text: str, middle_text: str, bottom_text: str) -> Tuple[str, str, str]:
+  top_text = re.sub("{random}", replace_random_word, top_text, flags=re.IGNORECASE)
+  middle_text = re.sub("{random}", replace_random_word, middle_text, flags=re.IGNORECASE)
+  bottom_text = re.sub("{random}", replace_random_word, bottom_text, flags=re.IGNORECASE) 
   return (top_text, middle_text, bottom_text)
 
-def get_random_font_name():
+def get_random_font_name() -> str:
   global font_names
-  
+
   if len(font_names) == 0:
     font_names = os.listdir("fonts")
   i = random.randint(0, len(font_names) - 1)
@@ -84,81 +87,64 @@ def get_random_font_name():
   del font_names[i]
   return name
 
-def get_shadowcolor(color):
+def get_shadowcolor(color: str) -> str:
   r, g, b = hex_to_rgb(color)
-  h, l, s = rgb2hls(r / 255.0, g / 255.0, b / 255.0)
+  _, l, _ = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
   if l >= 0.5:
     shadowcolor = "#212121"
   else:
     shadowcolor = "#e3e3e3"
   return shadowcolor
 
-def make_image(img, top_text, middle_text, bottom_text, color_1, color_2, color_3, ext):  
+def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
+    font_name = get_random_font_name()
+    font = get_font(text, img, 'fonts/{0}'.format(font_name))
+    draw = ImageDraw.Draw(img)
+    font_size = draw.textsize(text, font)
+
+    x = (img.width - font_size[0]) / 2
+    if mode == "top":
+      y = img.height * 0.025
+    elif mode == "middle":
+      y = (img.height - font_size[1]) / 2
+    elif mode == "bottom":
+      y = img.height - font_size[1] - (img.height * 0.025)
+    else: y = 0
+
+    # Thin border
+    shadowcolor = get_shadowcolor(color)
+    # pyright: reportUnknownMemberType=false
+    draw.text((x - 1, y), text, font=font, fill=shadowcolor, align="center")
+    draw.text((x + 1, y), text, font=font, fill=shadowcolor, align="center")
+    draw.text((x, y - 1), text, font=font, fill=shadowcolor, align="center")
+    draw.text((x, y + 1), text, font=font, fill=shadowcolor, align="center") 
+    draw.text((x, y), text, font=font, fill=color, align="center")
+
+def make_image(img: Image.Image, top_text: str, middle_text: str, \
+  bottom_text: str, color_1: str, color_2: str, color_3: str, ext: str) -> str:
   top_text, middle_text, bottom_text = check_text(top_text, middle_text, bottom_text)
 
   # TOP
   if top_text != "<empty>":
-    font_name = get_random_font_name()
-    font = get_font(top_text, img, 'fonts/{0}'.format(font_name))
-    draw = ImageDraw.Draw(img)
-    font_size = draw.textsize(top_text, font)
-    x = (img.width - font_size[0]) / 2
-    y = img.height * 0.025
+    draw_text(img, top_text, color_1, "top")
 
-    # thin border
-    shadowcolor = get_shadowcolor(color_1)
-    draw.text((x-1, y), top_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x+1, y), top_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y-1), top_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y+1), top_text, font=font, fill=shadowcolor, align="center")
-
-    draw.text((x, y), top_text, font=font, fill=color_1, align="center")
-  
   # Middle
   if middle_text != "<empty>":
-    font_name = get_random_font_name()
-    font = get_font(middle_text, img, 'fonts/{0}'.format(font_name))
-    draw = ImageDraw.Draw(img)
-    font_size = draw.textsize(middle_text, font)
-    x = (img.width - font_size[0]) / 2
-    y = (img.height - font_size[1]) / 2
-
-    # thin border
-    shadowcolor = get_shadowcolor(color_2)
-    draw.text((x-1, y), middle_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x+1, y), middle_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y-1), middle_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y+1), middle_text, font=font, fill=shadowcolor, align="center")
-
-    draw.text((x, y), middle_text, font=font, fill=color_2, align="center")
+    draw_text(img, middle_text, color_2, "middle")
 
   # BOTTOM
   if bottom_text != "<empty>":
-    font_name = get_random_font_name()
-    font = get_font(bottom_text, img, 'fonts/{0}'.format(font_name))
-    draw = ImageDraw.Draw(img)
-    font_size = draw.textsize(bottom_text, font)
-    x = (img.width - font_size[0]) / 2
-    y = img.height - font_size[1] - (img.height * 0.025)
-
-    # thin border
-    shadowcolor = get_shadowcolor(color_3)
-    draw.text((x-1, y), bottom_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x+1, y), bottom_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y-1), bottom_text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y+1), bottom_text, font=font, fill=shadowcolor, align="center")
-
-    draw.text((x, y), bottom_text, font=font, fill=color_3, align="center")
+    draw_text(img, bottom_text, color_3, "bottom")
 
   # SAVE
   result_path = "results/{0}_{1}{2}".format(randword(), now(), ext)
   img.save(result_path)
   return result_path
 
-def main():
+def main() -> None:
   # ARGS
   path = sys.argv[1]
-  fname, ext = os.path.splitext(path)
+  _, ext = os.path.splitext(path)
   top_text = string_escape(sys.argv[2])
   middle_text = string_escape(sys.argv[3])
   bottom_text = string_escape(sys.argv[4])
@@ -169,9 +155,9 @@ def main():
   if num_images > 100:
     quit()
   img = Image.open(path)
-  result_paths = []
+  result_paths: List[str] = []
 
-  for image in range(0, num_images):
+  for _ in range(0, num_images):
     res = make_image(img.copy(), top_text, middle_text, bottom_text, color_1, color_2, color_3, ext)
     result_paths.append(res)
 

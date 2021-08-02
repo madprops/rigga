@@ -87,7 +87,7 @@ function random_word(n) {
     space = ""
   }
 
-  text.value = `${text.value}${space}<random>`.trim()
+  text.value = `${text.value}${space}{random}`.trim()
   text.focus()
 }
 

@@ -6,6 +6,7 @@ from PIL import ImageDraw
 from typing import List
 from typing import Tuple
 from typing import Match
+from typing import Iterator
 from nouns_list import nouns
 from verbs_list import verbs
 import colorsys
@@ -15,7 +16,8 @@ import sys
 import os
 import re
 
-font_names = iter(os.listdir("fonts"))
+# Globals
+font_names: Iterator[str]
 
 def random_string() -> str:
     a = ["a","e","i","o","u"]
@@ -119,13 +121,13 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
   if bottom_text != "{empty}":
     draw_text(img, bottom_text, color_3, "bottom", font_name)
 
-  # SAVE
+  # Save
   result_path = "results/{0}_{1}{2}".format(random_string(), now(), ext)
   img.save(result_path)
   return result_path
 
 def main() -> None:
-  # Args
+  # Arguments
   path = sys.argv[1]
   _, ext = os.path.splitext(path)
   top_text = string_escape(sys.argv[2])
@@ -138,6 +140,12 @@ def main() -> None:
   if num_images > 100: quit()
   img = Image.open(path)
   result_paths: List[str] = []
+
+  # Get font names
+  global font_names
+  file_names = os.listdir("fonts")
+  random.shuffle(file_names)
+  font_names = iter(file_names)  
 
   # Make images
   for _ in range(0, num_images):

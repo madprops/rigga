@@ -17,7 +17,7 @@ import re
 
 font_names: List[str] = []
 
-def randword() -> str:
+def random_string() -> str:
     a = ["a","e","i","o","u"]
     b = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
     "n", "p", "r", "s", "t", "v", "w", "x", "y", "z"]
@@ -72,7 +72,7 @@ def replace_random_word(_: Match[str]) -> str:
     return word
 
 def replace_random(text: str) -> str:
-  return re.sub("{random}", replace_random_word, text, flags=re.IGNORECASE) 
+  return re.sub("{random}", replace_random_word, text, flags=re.IGNORECASE)
 
 def get_random_font_name() -> str:
   global font_names
@@ -110,12 +110,11 @@ def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
 
     # Thin border
     shadowcolor = get_shadowcolor(color)
-    
-    # pyright: reportUnknownMemberType=false
+
     draw.text((x - 1, y), text, font=font, fill=shadowcolor, align="center")
     draw.text((x + 1, y), text, font=font, fill=shadowcolor, align="center")
     draw.text((x, y - 1), text, font=font, fill=shadowcolor, align="center")
-    draw.text((x, y + 1), text, font=font, fill=shadowcolor, align="center") 
+    draw.text((x, y + 1), text, font=font, fill=shadowcolor, align="center")
     draw.text((x, y), text, font=font, fill=color, align="center")
 
 def make_image(img: Image.Image, top_text: str, middle_text: str, \
@@ -137,7 +136,7 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
     draw_text(img, bottom_text, color_3, "bottom")
 
   # SAVE
-  result_path = "results/{0}_{1}{2}".format(randword(), now(), ext)
+  result_path = "results/{0}_{1}{2}".format(random_string(), now(), ext)
   img.save(result_path)
   return result_path
 

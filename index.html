@@ -1,88 +1,88 @@
 <html>
   <head>
     <title>Rigga</title>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
-    <link rel='shortcut icon' href='cover.jpg' type='image/x-icon'>
-    <link rel=stylesheet href='style.css?v=3'>
-    <script src='colorlib.js?v=2'></script>
-    <script src='base.js?v=4'></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="cover.jpg" type="image/x-icon">
+    <link rel=stylesheet href="style.css?v=3">
+    <script src="colorlib.js?v=2"></script>
+    <script src="base.js?v=4"></script>
 
   </head>
   <body>
-    <img src='cover.jpg' id='image'>
+    <img src="cover.jpg" id="image">
 
-    <form id='form' method='post' action='upload.php' enctype='multipart/form-data'>
-      <br><input type='file' name='file' id='file'><br>
-      <br><div id='reset_all' class='button'>Reset All</div>
+    <form id="form" method="post" action="upload.php" enctype="multipart/form-data">
+      <br><input type="file" name="file" id="file"><br>
+      <br><div id="reset_all" class="button">Reset All</div>
       
-      <div class='unselectable'>
+      <div class="unselectable">
         
-        <br><br><hr class='separator'><br><br>
+        <br><br><hr class="separator"><br><br>
         
-        <input type='text' name='top_text' id='top_text' class='text' placeholder='Top Text'>
+        <input type="text" name="top_text" id="top_text" class="text" placeholder="Top Text">
         <br><br>
-        <div class='button inline' onclick='random_word(1)'>Random</div>
+        <div class="button inline" onclick="random_word(1)">Random</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='linebreak(1)'>Linebreak</div>
+        <div class="button inline" onclick="linebreak(1)">Linebreak</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='clear_text(1)'>Clear</div>
+        <div class="button inline" onclick="clear_text(1)">Clear</div>
 
         <br><br><br>
-        <input type='color' name='color_1' id='color_1' class='color' value='#ffffff'>
+        <input type="color" name="color_1" id="color_1" class="color" value="#ffffff">
         <br><br>
-        <div class='button inline' onclick='change_color(1, 3)'>Light</div>
+        <div class="button inline" onclick="change_color(1, 3)">Light</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(1, 4)'>Dark</div>
+        <div class="button inline" onclick="change_color(1, 4)">Dark</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(1, 1)'>White</div>
+        <div class="button inline" onclick="change_color(1, 1)">White</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(1, 2)'>Black</div>
+        <div class="button inline" onclick="change_color(1, 2)">Black</div>
 
-        <br><br><hr class='separator'><br><br>
+        <br><br><hr class="separator"><br><br>
 
-        <input type='text' name='middle_text' id='middle_text' class='text' placeholder='Middle Text'>
+        <input type="text" name="middle_text" id="middle_text" class="text" placeholder="Middle Text">
         <br><br>
-        <div class='button inline' onclick='random_word(2)'>Random</div>
+        <div class="button inline" onclick="random_word(2)">Random</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='linebreak(2)'>Linebreak</div>
+        <div class="button inline" onclick="linebreak(2)">Linebreak</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='clear_text(2)'>Clear</div>
-
-        <br><br><br>
-        <input type='color' name='color_2' id='color_2' class='color' value='#ffffff'>
-        <br><br>
-        <div class='button inline' onclick='change_color(2, 3)'>Light</div>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(2, 4)'>Dark</div>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(2, 1)'>White</div>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(2, 2)'>Black</div>
-        
-        <br><br><hr class='separator'><br><br>
-
-        <input type='text' name='bottom_text' id='bottom_text' class='text' placeholder='Bottom Text'>
-        <br><br>
-        <div class='button inline' onclick='random_word(3)'>Random</div>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='linebreak(3)'>Linebreak</div>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='clear_text(3)'>Clear</div>
+        <div class="button inline" onclick="clear_text(2)">Clear</div>
 
         <br><br><br>
-        <input type='color' name='color_3' id='color_3' class='color' value='#ffffff'>
+        <input type="color" name="color_2" id="color_2" class="color" value="#ffffff">
         <br><br>
-        <div class='button inline' onclick='change_color(3, 3)'>Light</div>
+        <div class="button inline" onclick="change_color(2, 3)">Light</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(3, 4)'>Dark</div>
+        <div class="button inline" onclick="change_color(2, 4)">Dark</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(3, 1)'>White</div>
+        <div class="button inline" onclick="change_color(2, 1)">White</div>
         &nbsp;&nbsp;|&nbsp;&nbsp;
-        <div class='button inline' onclick='change_color(3, 2)'>Black</div>
+        <div class="button inline" onclick="change_color(2, 2)">Black</div>
         
-        <br><br><hr class='separator'><br><br>
+        <br><br><hr class="separator"><br><br>
+
+        <input type="text" name="bottom_text" id="bottom_text" class="text" placeholder="Bottom Text">
+        <br><br>
+        <div class="button inline" onclick="random_word(3)">Random</div>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <div class="button inline" onclick="linebreak(3)">Linebreak</div>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <div class="button inline" onclick="clear_text(3)">Clear</div>
+
+        <br><br><br>
+        <input type="color" name="color_3" id="color_3" class="color" value="#ffffff">
+        <br><br>
+        <div class="button inline" onclick="change_color(3, 3)">Light</div>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <div class="button inline" onclick="change_color(3, 4)">Dark</div>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <div class="button inline" onclick="change_color(3, 1)">White</div>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <div class="button inline" onclick="change_color(3, 2)">Black</div>
         
-        <input id='submit' type='submit' value='R I G'>
+        <br><br><hr class="separator"><br><br>
+        
+        <input id="submit" type="submit" value="R I G">
       </div>
       <br><br><br>
     </form>

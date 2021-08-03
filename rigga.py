@@ -63,9 +63,12 @@ def get_font(text: str, img: Image.Image, font_name: str) -> ImageFont.FreeTypeF
         quit()
 
 def replace_random_word(_: Match[str]) -> str:
-  if random.randint(0, 9) == 9:
+  n = random.randint(0, 9)
+  if n == 0:
     word = str(random.randint(0, 1000))
-  elif random.randint(0, 1) == 1:
+  elif n == 1:
+    word = random_string()
+  elif n % 2 == 0:
     word = random.choice(nouns)
   else:
     word = random.choice(verbs)

@@ -8,9 +8,9 @@
 
   $max_text = 300;
   $num_images = 6;
-  $top_text = "<empty>";
-  $middle_text = "<empty>";
-  $bottom_text = "<empty>";
+  $top_text = "{empty}";
+  $middle_text = "{empty}";
+  $bottom_text = "{empty}";
   $color_1 = "#ffffff>";
   $color_2 = "#ffffff>";
   $color_3 = "#ffffff>";
@@ -38,18 +38,18 @@
   }
 
   if($top_text == "") {
-    $top_text = "<empty>";
+    $top_text = "{empty}";
   }
 
   if($middle_text == "") {
-    $middle_text = "<empty>";
+    $middle_text = "{empty}";
   }
 
   if($bottom_text == "") {
-    $bottom_text = "<empty>";
+    $bottom_text = "{empty}";
   }
 
-  if($top_text == "<empty>" and $middle_text == "<empty>" and $bottom_text == "<empty>") {
+  if($top_text == "{empty}" and $middle_text == "{empty}" and $bottom_text == "{empty}") {
     echo "No text provided.";
     exit(0);
   }

@@ -36,13 +36,13 @@ def now() -> float:
   return datetime.datetime.timestamp(datetime.datetime.now())
 
 def string_escape(s: str, encoding: str = "utf-8") -> str:
-  return (s.encode('latin1')         # To bytes, required by 'unicode-escape'
-          .decode('unicode-escape') # Perform the actual octal-escaping decode
-          .encode('latin1')         # 1:1 mapping back to bytes
+  return (s.encode("latin1")         # To bytes, required by unicode-escape
+          .decode("unicode-escape") # Perform the actual octal-escaping decode
+          .encode("latin1")         # 1:1 mapping back to bytes
           .decode(encoding))
 
 def hex_to_rgb(hex: str) -> Tuple[int, ...]:
-    hex = hex.lstrip('#')
+    hex = hex.lstrip("#")
     hlen = len(hex)
     return tuple(int(hex[i:i+hlen//3], 16) for i in range(0, hlen, hlen//3))
 
@@ -71,11 +71,8 @@ def replace_random_word(_: Match[str]) -> str:
     word = word.title()
     return word
 
-def check_text(top_text: str, middle_text: str, bottom_text: str) -> Tuple[str, str, str]:
-  top_text = re.sub("{random}", replace_random_word, top_text, flags=re.IGNORECASE)
-  middle_text = re.sub("{random}", replace_random_word, middle_text, flags=re.IGNORECASE)
-  bottom_text = re.sub("{random}", replace_random_word, bottom_text, flags=re.IGNORECASE) 
-  return (top_text, middle_text, bottom_text)
+def replace_random(text: str) -> str:
+  return re.sub("{random}", replace_random_word, text, flags=re.IGNORECASE) 
 
 def get_random_font_name() -> str:
   global font_names
@@ -98,7 +95,7 @@ def get_shadowcolor(color: str) -> str:
 
 def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
     font_name = get_random_font_name()
-    font = get_font(text, img, 'fonts/{0}'.format(font_name))
+    font = get_font(text, img, "fonts/{0}".format(font_name))
     draw = ImageDraw.Draw(img)
     font_size = draw.textsize(text, font)
 
@@ -113,6 +110,7 @@ def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
 
     # Thin border
     shadowcolor = get_shadowcolor(color)
+    
     # pyright: reportUnknownMemberType=false
     draw.text((x - 1, y), text, font=font, fill=shadowcolor, align="center")
     draw.text((x + 1, y), text, font=font, fill=shadowcolor, align="center")
@@ -122,18 +120,20 @@ def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
 
 def make_image(img: Image.Image, top_text: str, middle_text: str, \
   bottom_text: str, color_1: str, color_2: str, color_3: str, ext: str) -> str:
-  top_text, middle_text, bottom_text = check_text(top_text, middle_text, bottom_text)
+  top_text = replace_random(top_text)
+  middle_text = replace_random(middle_text)
+  bottom_text = replace_random(bottom_text)
 
-  # TOP
-  if top_text != "<empty>":
+  # Top
+  if top_text != "{empty}":
     draw_text(img, top_text, color_1, "top")
 
   # Middle
-  if middle_text != "<empty>":
+  if middle_text != "{empty}":
     draw_text(img, middle_text, color_2, "middle")
 
-  # BOTTOM
-  if bottom_text != "<empty>":
+  # Bottom
+  if bottom_text != "{empty}":
     draw_text(img, bottom_text, color_3, "bottom")
 
   # SAVE
@@ -142,7 +142,7 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
   return result_path
 
 def main() -> None:
-  # ARGS
+  # Args
   path = sys.argv[1]
   _, ext = os.path.splitext(path)
   top_text = string_escape(sys.argv[2])
@@ -152,15 +152,16 @@ def main() -> None:
   color_2 = sys.argv[6]
   color_3 = sys.argv[7]
   num_images = int(sys.argv[8])
-  if num_images > 100:
-    quit()
+  if num_images > 100: quit()
   img = Image.open(path)
   result_paths: List[str] = []
 
+  # Make images
   for _ in range(0, num_images):
     res = make_image(img.copy(), top_text, middle_text, bottom_text, color_1, color_2, color_3, ext)
     result_paths.append(res)
 
+  # Result paths
   print(" ".join(result_paths))
 
 main()

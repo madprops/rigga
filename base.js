@@ -3,19 +3,24 @@ let colorlib
 window.onload = function() {
   colorlib = ColorLib()
 
-  document.getElementById('form').onsubmit = function() {
+  document.getElementById("form").onsubmit = function() {
       return check_form()
   }
 
   let file = document.querySelector("#file")
-  file.addEventListener('change', update_image, false)
+  file.addEventListener("change", update_image, false)
   let event = document.createEvent("UIEvents")
   event.initUIEvent("change", true, true)
   file.dispatchEvent(event)
-        
+
   let image = document.querySelector("#image")
   image.addEventListener("click", function() {
     file.click()
+  })
+
+  let reset = document.querySelector("#reset_all")
+  reset.addEventListener("click", function () {
+    reset_all()
   })
 }
 
@@ -49,7 +54,7 @@ function update_image(evt) {
 
   let f = files[0]
 
-  if (!f.type.match('image.*')) {
+  if (!f.type.match("image.*")) {
     return
   }
 
@@ -57,7 +62,7 @@ function update_image(evt) {
 
   reader.onload = (function(tf) {
     return function(e) {
-      let image = document.querySelector('#image')
+      let image = document.querySelector("#image")
       image.src = e.target.result
     }
   })(f);
@@ -104,7 +109,6 @@ function linebreak(n) {
 function clear_text(n) {
   let text = get_text(n)
   text.value = ""
-  text.focus()
 }
 
 function change_color(n1, n2) {
@@ -177,4 +181,19 @@ function get_random_dark_color() {
   let rgb = colorlib.lab2rgb(lab)
   let hex = colorlib.rgb_to_hex(rgb.map(x => parseInt(x)))
   return hex
+}
+
+function clear_file() {
+  document.querySelector("#file").files = new DataTransfer().files
+  document.querySelector("#image").src = "cover.jpg"
+}
+
+function reset_all() {
+  clear_text(1)
+  clear_text(2)
+  clear_text(3)
+  change_color(1, 1)
+  change_color(2, 1)
+  change_color(3, 1)
+  clear_file()
 }

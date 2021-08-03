@@ -15,6 +15,8 @@ import sys
 import os
 import re
 
+font_names = iter(os.listdir("fonts"))
+
 def random_string() -> str:
     a = ["a","e","i","o","u"]
     b = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
@@ -70,10 +72,6 @@ def replace_random_word(_: Match[str]) -> str:
 def replace_random(text: str) -> str:
   return re.sub("{random}", replace_random_word, text, flags=re.IGNORECASE)
 
-def get_random_font_name() -> str:
-  fonts = os.listdir("fonts")
-  return fonts[random.randint(0, len(fonts) - 1)]
-
 def get_shadowcolor(color: str) -> str:
   r, g, b = hex_to_rgb(color)
   _, l, _ = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
@@ -107,7 +105,7 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
   top_text = replace_random(top_text)
   middle_text = replace_random(middle_text)
   bottom_text = replace_random(bottom_text)
-  font_name = get_random_font_name()
+  font_name = next(font_names)
 
   # Top
   if top_text != "{empty}":

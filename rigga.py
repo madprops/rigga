@@ -15,8 +15,6 @@ import sys
 import os
 import re
 
-font_names: List[str] = []
-
 def random_string() -> str:
     a = ["a","e","i","o","u"]
     b = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m",
@@ -62,39 +60,26 @@ def get_font(text: str, img: Image.Image, font_name: str) -> ImageFont.FreeTypeF
 
 def replace_random_word(_: Match[str]) -> str:
   if random.randint(0, 9) == 9:
-    return str(random.randint(0, 1000))
+    word = str(random.randint(0, 1000))
+  elif random.randint(0, 1) == 1:
+    word = random.choice(nouns)
   else:
-    if random.randint(0, 1) == 1:
-      word = random.choice(nouns)
-    else:
-      word = random.choice(verbs)
-    word = word.title()
-    return word
+    word = random.choice(verbs)
+  return word.title()
 
 def replace_random(text: str) -> str:
   return re.sub("{random}", replace_random_word, text, flags=re.IGNORECASE)
 
 def get_random_font_name() -> str:
-  global font_names
-
-  if len(font_names) == 0:
-    font_names = os.listdir("fonts")
-  i = random.randint(0, len(font_names) - 1)
-  name = font_names[i]
-  del font_names[i]
-  return name
+  fonts = os.listdir("fonts")
+  return fonts[random.randint(0, len(fonts) - 1)]
 
 def get_shadowcolor(color: str) -> str:
   r, g, b = hex_to_rgb(color)
   _, l, _ = colorsys.rgb_to_hls(r / 255.0, g / 255.0, b / 255.0)
-  if l >= 0.5:
-    shadowcolor = "#212121"
-  else:
-    shadowcolor = "#e3e3e3"
-  return shadowcolor
+  return "#212121" if l >= 0.5 else "#e3e3e3"
 
-def draw_text(img: Image.Image, text: str, color: str, mode: str) -> None:
-    font_name = get_random_font_name()
+def draw_text(img: Image.Image, text: str, color: str, mode: str, font_name: str) -> None:
     font = get_font(text, img, "fonts/{0}".format(font_name))
     draw = ImageDraw.Draw(img)
     font_size = draw.textsize(text, font)
@@ -122,18 +107,19 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
   top_text = replace_random(top_text)
   middle_text = replace_random(middle_text)
   bottom_text = replace_random(bottom_text)
+  font_name = get_random_font_name()
 
   # Top
   if top_text != "{empty}":
-    draw_text(img, top_text, color_1, "top")
+    draw_text(img, top_text, color_1, "top", font_name)
 
   # Middle
   if middle_text != "{empty}":
-    draw_text(img, middle_text, color_2, "middle")
+    draw_text(img, middle_text, color_2, "middle", font_name)
 
   # Bottom
   if bottom_text != "{empty}":
-    draw_text(img, bottom_text, color_3, "bottom")
+    draw_text(img, bottom_text, color_3, "bottom", font_name)
 
   # SAVE
   result_path = "results/{0}_{1}{2}".format(random_string(), now(), ext)

@@ -2,7 +2,7 @@
   error_reporting(E_ALL);
   ini_set("display_errors", "On");
 
-  $recaptcha_key = file_get_contents("recaptcha.key");
+  $recaptcha_key = trim(file_get_contents("recaptcha.key"));
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify?secret=".$recaptcha_key."&response=".$_POST["g-recaptcha-response"]);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

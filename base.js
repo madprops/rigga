@@ -1,4 +1,9 @@
 let colorlib
+let recaptcha_checked = false
+
+function recaptcha_callback() {
+  recaptcha_checked = true
+}
 
 window.onload = function() {
   colorlib = ColorLib()
@@ -25,6 +30,10 @@ window.onload = function() {
 }
 
 function check_form() {
+  if (!recaptcha_checked) {
+    return false
+  }
+
   if(!document.querySelector("#file").value) {
     alert("No file selected.")
     return false

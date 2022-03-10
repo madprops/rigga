@@ -75,3 +75,7 @@ body, html {
   width: 50%;
   border-color: #8e8eca;
 }
+
+.recaptcha_widget {
+  display: inline-block;
+}

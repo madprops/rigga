@@ -110,18 +110,20 @@ def make_image(img: Image.Image, top_text: str, middle_text: str, \
   top_text = replace_random(top_text)
   middle_text = replace_random(middle_text)
   bottom_text = replace_random(bottom_text)
-  font_name = next(font_names)
 
   # Top
   if top_text != "{empty}":
+    font_name = next(font_names)
     draw_text(img, top_text, color_1, "top", font_name)
 
   # Middle
   if middle_text != "{empty}":
+    font_name = next(font_names)
     draw_text(img, middle_text, color_2, "middle", font_name)
 
   # Bottom
   if bottom_text != "{empty}":
+    font_name = next(font_names)
     draw_text(img, bottom_text, color_3, "bottom", font_name)
 
   # Save
@@ -148,7 +150,7 @@ def main() -> None:
   global font_names
   file_names = os.listdir("fonts")
   random.shuffle(file_names)
-  font_names = iter(file_names)  
+  font_names = iter(file_names)
 
   # Make images
   for _ in range(0, num_images):

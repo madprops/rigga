@@ -54,7 +54,7 @@ def get_font(text: str, img: Image.Image, font_name: str) -> ImageFont.FreeTypeF
 
   while True:
     font = ImageFont.truetype(font_name, font_size)
-    size = draw.textsize(text, font)
+    size = draw.textbbox((0, 0), text, font=font)[2:4]
     if (size[0] < img.width * 0.95) and size[1] < img.height * 0.5:
       return font
     else:
@@ -85,7 +85,7 @@ def get_shadowcolor(color: str) -> str:
 def draw_text(img: Image.Image, text: str, color: str, mode: str, font_name: str) -> None:
     font = get_font(text, img, "fonts/{0}".format(font_name))
     draw = ImageDraw.Draw(img)
-    font_size = draw.textsize(text, font)
+    font_size = draw.textbbox((0, 0), text, font=font)[2:4]
 
     x = (img.width - font_size[0]) / 2
     if mode == "top":

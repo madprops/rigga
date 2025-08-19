@@ -23,9 +23,9 @@
   $top_text = "{empty}";
   $middle_text = "{empty}";
   $bottom_text = "{empty}";
-  $color_1 = "#ffffff>";
-  $color_2 = "#ffffff>";
-  $color_3 = "#ffffff>";
+  $color_1 = "#ffffff";
+  $color_2 = "#ffffff";
+  $color_3 = "#ffffff";
 
   if($_FILES["file"]["name"] == "") {
     echo "No image was provided.";
@@ -103,7 +103,7 @@
 
     try {
       $cmd = 'python3 rigga.py "' . $target . '" "' . $top_text
-        . '" "' . $middle_text . '" "' . $bottom_text 
+        . '" "' . $middle_text . '" "' . $bottom_text
         . '" "' . $color_1 . '" "' . $color_2 . '" "' . $color_3 . '" '. $num_images;
     } catch (Exception $e) {
       unlink($target);
@@ -117,13 +117,13 @@
       font-family: sans-serif;
       background-color: rgb(101, 59, 199);
       color: #FF2D40;
-    } 
-    
+    }
+
     .item {
       display: inline-block;
       padding: 20px;
-    } 
-    
+    }
+
     .title {
       padding-bottom: 5px;
       display: block;
@@ -133,7 +133,7 @@
       max-height: 800px;
       max-width: 800px;
     }
-    
+
     .info {
       margin-left: 20px;
       margin-right: 20px;
@@ -172,7 +172,7 @@
   } else {
     echo "There was an error uploading the image.";
   }
-  
+
   function cleanup() {
     global $target;
     global $paths;

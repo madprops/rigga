@@ -102,7 +102,7 @@
     $date1 = microtime(true);
 
     try {
-      $cmd = 'python3 rigga.py "' . $target . '" "' . $top_text
+      $cmd = 'venv/bin/python rigga.py "' . $target . '" "' . $top_text
         . '" "' . $middle_text . '" "' . $bottom_text
         . '" "' . $color_1 . '" "' . $color_2 . '" "' . $color_3 . '" '. $num_images;
     } catch (Exception $e) {

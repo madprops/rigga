@@ -155,7 +155,7 @@
     }
 
     echo "<head>" . $topheader . "<style>" . $style . "</style></head>";
-    echo "<div class='info'>Rig done in " . $diff . " " . $seconds . "</div>";
+    echo "<div class='info'>Rig done in " . $diff . " " . $seconds . " | <button id='download'>Download All</button></div>";
 
     try {
       for ($i = 0; $i < count($paths); $i++) {
@@ -167,6 +167,31 @@
       cleanup();
       exit(0);
     }
+
+    echo '<script src="zip.js"></script>
+    <script>
+    document.getElementById("download").addEventListener("click", function() {
+        var zip = new JSZip();
+        var images = document.querySelectorAll(".image");
+
+        images.forEach(function(img, i) {
+            var src = img.src;
+            var base64Data = src.split(",")[1];
+            var mimeType = src.split(":")[1].split(";")[0];
+            var extension = mimeType.includes("jpeg") ? "jpg" : (mimeType.includes("png") ? "png" : "img");
+            zip.file("rigga_image_" + (i + 1) + "." + extension, base64Data, {base64: true});
+        });
+
+        zip.generateAsync({type:"blob"}).then(function(content) {
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(content);
+            link.download = "rigga_images.zip";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
+    </script>';
 
     cleanup();
   } else {
